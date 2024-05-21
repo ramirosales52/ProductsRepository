@@ -5,7 +5,6 @@ import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { entities } from './entities';
 
-
 @Module({
   imports: [
     ProductsModule,
@@ -20,5 +19,5 @@ import { entities } from './entities';
   providers: [AppService],
 })
 
-export class AppModule {}
+export class AppModule { }
 
