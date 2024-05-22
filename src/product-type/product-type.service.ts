@@ -14,6 +14,7 @@ export class ProductTypeService {
 
   createProductType(productType: CreateProductTypeDto) {
     const newProductType = this.productTypesRepository.create(productType)
+    
     return this.productTypesRepository.save(newProductType)
   }
 
@@ -48,7 +49,7 @@ export class ProductTypeService {
     }
 
     const updatedProductType = Object.assign(productTypeFound, productType)
+    
     return this.productTypesRepository.save(updatedProductType)
-
   }
 }
