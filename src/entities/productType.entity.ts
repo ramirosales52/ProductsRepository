@@ -3,11 +3,11 @@ import { ProductEntity } from "./product.entity"
 
 @Entity('productsTypes')
 export class ProductTypesEntity {
-    @PrimaryGeneratedColumn()
-    id: number
-    @Column()
-    name: string
-    @OneToMany(() => ProductEntity, (product) => product.productType)
-    products: ProductEntity[]
+  @PrimaryGeneratedColumn()
+  id: number
+  @Column()
+  name: string
+  @OneToMany(() => ProductEntity, (product) => product.productType)
+  products: ProductEntity
 }
 
