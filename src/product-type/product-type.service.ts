@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductTypesEntity } from 'src/entities/productType.entity';
 import { Repository } from 'typeorm';
 import { CreateProductTypeDto } from './dto/create-product-type.dto';
-// import { UpdateProductTypeDto } from './dto/update-product-type.dto';
+import { UpdateProductTypeDto } from './dto/update-product-type.dto';
 
 @Injectable()
 export class ProductTypeService {
@@ -18,14 +18,37 @@ export class ProductTypeService {
   }
 
   getProductTypes() {
-    return this.productTypesRepository.find()
+    return this.productTypesRepository.find({
+      relations: ['products']
+    })
   }
 
-  getProductType() {
+  async getProductType(id: number) {
+    const productTypeFound = await this.productTypesRepository.findOne({
+      where: {
+        id
+      },
+      relations: ['products']
+    })
 
+    if (!productTypeFound) return new HttpException("Product type not found", HttpStatus.NOT_FOUND)
+
+    return productTypeFound
   }
 
-  updateProductType() {
+  async updateProductType(id: number, productType: UpdateProductTypeDto) {
+    const productTypeFound = await this.productTypesRepository.findOne({
+      where: {
+        id
+      }
+    })
+
+    if (!productTypeFound) {
+      return new HttpException("Product type not found", HttpStatus.NOT_FOUND)
+    }
+
+    const updatedProductType = Object.assign(productTypeFound, productType)
+    return this.productTypesRepository.save(updatedProductType)
 
   }
 }

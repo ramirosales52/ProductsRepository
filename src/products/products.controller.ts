@@ -20,7 +20,7 @@ export class ProductsController {
   }
 
   @Post()
-  createUser(@Body() newProduct: CreateProductDto): Promise<ProductEntity> {
+  createUser(@Body() newProduct: CreateProductDto): Promise<HttpException | ProductEntity> {
     return this.productsService.createProduct(newProduct)
   }
 

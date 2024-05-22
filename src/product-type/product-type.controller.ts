@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseIntPipe, Put } from '@nestjs/common';
 import { ProductTypeService } from './product-type.service';
 import { CreateProductTypeDto } from './dto/create-product-type.dto';
-// import { UpdateProductTypeDto } from './dto/update-product-type.dto';
+import { UpdateProductTypeDto } from './dto/update-product-type.dto';
 
 @Controller('product-types')
 export class ProductTypeController {
@@ -12,9 +12,19 @@ export class ProductTypeController {
     return this.productTypeService.createProductType(productType)
   }
 
+  @Put(':id')
+  updateProductType(@Param('id', ParseIntPipe) id: number, @Body() productType: UpdateProductTypeDto) {
+    return this.productTypeService.updateProductType(id, productType)
+  }
+
   @Get()
   getProductTypes() {
     return this.productTypeService.getProductTypes()
+  }
+
+  @Get(':id')
+  getProductType(@Param('id', ParseIntPipe) id: number) {
+    return this.productTypeService.getProductType(id)
   }
 
 }

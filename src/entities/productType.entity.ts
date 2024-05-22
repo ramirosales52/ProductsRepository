@@ -8,6 +8,6 @@ export class ProductTypesEntity {
   @Column()
   name: string
   @OneToMany(() => ProductEntity, (product) => product.productType)
-  products: ProductEntity
+  products: ProductEntity[]
 }
 

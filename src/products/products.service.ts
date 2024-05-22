@@ -4,13 +4,25 @@ import { ProductEntity } from 'src/entities/product.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductTypeService } from 'src/product-type/product-type.service';
 
 @Injectable()
 export class ProductsService {
-  constructor(@InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>) { }
+  constructor(
+    @InjectRepository(ProductEntity) private productRepository: Repository<ProductEntity>,
+    private productTypesService: ProductTypeService
+  ) { }
 
-  createProduct(product: CreateProductDto) {
+
+  async createProduct(product: CreateProductDto) {
+    const productTypeFound = await this.productTypesService.getProductType(product.productTypeId)
+
+    if (!productTypeFound) {
+      return new HttpException("Product type not found", HttpStatus.NOT_FOUND)
+    }
+
     const newProduct = this.productRepository.create(product)
+
     return this.productRepository.save(newProduct)
   }
 
@@ -24,7 +36,8 @@ export class ProductsService {
     const productFound = await this.productRepository.findOne({
       where: {
         id
-      }
+      },
+      relations: ['productType']
     })
 
     if (!productFound) {
