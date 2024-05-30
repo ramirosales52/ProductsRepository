@@ -18,7 +18,7 @@ export class ProductsService {
     const productTypeFound = await this.productTypesService.getProductType(product.productTypeId)
 
     if (!productTypeFound) {
-      return new HttpException("Product type not found", HttpStatus.NOT_FOUND)
+      throw new HttpException("Product type not found", HttpStatus.NOT_FOUND)
     }
 
     const newProduct = this.productRepository.create(product)

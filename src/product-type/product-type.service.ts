@@ -32,7 +32,7 @@ export class ProductTypeService {
       relations: ['products']
     })
 
-    if (!productTypeFound) return new HttpException("Product type not found", HttpStatus.NOT_FOUND)
+    if (!productTypeFound) throw new HttpException("Product type not found", HttpStatus.NOT_FOUND)
 
     return productTypeFound
   }
